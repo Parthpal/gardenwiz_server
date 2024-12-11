@@ -1,3 +1,4 @@
+import { Model } from "mongoose";
 import { USER_ROLE, USER_STATUS } from "./user.constant";
 
 export type TUser = {
@@ -12,5 +13,10 @@ export type TUser = {
     createdAt?: Date;
     updatedAt?: Date;
   };
-
-  
+  export interface IUserModel extends Model<TUser> {
+    isUserExistsByEmail(id: string): Promise<TUser>;
+    isPasswordMatched(
+      plainTextPassword: string,
+      hashedPassword: string
+    ): Promise<boolean>;
+  }
