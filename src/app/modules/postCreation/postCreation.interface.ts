@@ -1,9 +1,9 @@
 import { ObjectId } from "mongoose";
 
-interface IPost {
+export interface IPost {
+    title:string,
     content:string;
-    tags:string[];
-    authorID:ObjectId;
+    userID:ObjectId;
     categoryID:ObjectId;
     images?:string[];
     premium:boolean;
