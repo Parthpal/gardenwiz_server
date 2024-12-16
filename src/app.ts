@@ -8,6 +8,7 @@ import httpStatus from 'http-status'
 import { UserRoutes } from './app/modules/User/user.route';
 import { authRoutes } from './app/modules/Auth/Auth.route';
 import { categoryRoutes } from './app/modules/categories/category.route';
+import { postRoutes } from './app/modules/postCreation/postCreation.route';
 
 const app: Application = express();
 
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1', UserRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/', categoryRoutes);
+app.use('/api/v1/', postRoutes);
 
 //Testing
 app.get('/', (req: Request, res: Response, next: NextFunction) => {

@@ -33,7 +33,7 @@ const userLogin=async(req:Request,res:Response)=>{
     catch(error){
        res.status(500).json({
            success:false,
-           message:'User  failed',
+           message:'User failed',
            error:error.message
        })
     }
