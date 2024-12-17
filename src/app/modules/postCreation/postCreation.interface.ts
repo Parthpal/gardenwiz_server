@@ -3,9 +3,9 @@ import { ObjectId } from "mongoose";
 export interface IPost {
     title:string,
     content:string;
-    userID:ObjectId;
+    userID:string;
     categoryID:ObjectId;
-    images?:string[];
+    images:string[];
     premium:boolean;
     upvotes:number;
     downvotes:number;

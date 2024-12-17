@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import { postServices } from "./postCreation.service";
+import { log } from "console";
 
 const postCreationC=async(req:Request,res:Response)=>{
     try{
-        const user=await postServices.createPosts(req.body,req.files);
+        const post=await postServices.createPosts(req.body,req.files);
         // send response with created user
+        console.log(post);
+        
         res.status(200).json({
             success:true,
             message:'Data Posted successfully',

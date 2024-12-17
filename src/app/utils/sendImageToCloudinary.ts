@@ -2,24 +2,25 @@ import { v2 as cloudinary } from 'cloudinary';
 import config from '../config';
 import multer from 'multer';
 export const sendImageToCloudanary=async (imageName:string,path:string)=>{
+      try {
         // Configuration
-        cloudinary.config({ 
-            cloud_name: config.cloudinary_cloud_name, 
-            api_key: config.cloudinary_api_key, 
-            api_secret: config.cloudinary_api_secret // Click 'View API Keys' above to copy your API secret
+        cloudinary.config({
+            cloud_name: config.cloudinary_cloud_name,
+            api_key: config.cloudinary_api_key,
+            api_secret: config.cloudinary_api_secret,
         });
-            // Upload an image
-     const uploadResult = await cloudinary.uploader
-     .upload(
-         path, {
-             public_id: imageName,
-         }
-     )
-     .catch((error) => {
-         console.log(error);
-     });
-  
-  console.log(uploadResult);
+
+        // Upload an image
+        const uploadResult = await cloudinary.uploader.upload(path, {
+            public_id: imageName,
+        });
+
+       // console.log("Upload Result:", uploadResult); // Optional: Log for debugging
+        return uploadResult; // Return the result
+      } catch (error) {
+        console.error("Error uploading to Cloudinary:", error);
+        return null; // Return null in case of an error
+      }
 }
 
 const storage = multer.diskStorage({
