@@ -26,7 +26,6 @@ await Promise.all(
     })
 )
 payload.images = itemImages;
-payload.title="Post Title";
 payload.userID= '65598vd6698sacQ' // Replace with actual ObjectId
 payload.premium= false;
 payload.upvotes= 0;
@@ -40,6 +39,29 @@ const result=await Post.create(payload);
 return result
 }
 
+const getPostS=()=>{
+    const result=Post.find();
+    return result;
+}
+const updateUpvotePostS=(id:string)=>{
+    const result=Post.findByIdAndUpdate(
+        {_id:id},
+        {$inc:{upvotes:1}},
+        { new: true })
+        ;
+    return result;
+}
+const updateDownvotePostS=async(id:string)=>{
+    const result=Post.findByIdAndUpdate(
+        {_id:id},
+        {$inc:{downvotes:1}},
+        { new: true })
+        ;
+    return result;
+}
+
 export const postServices={
-    createPosts
+    createPosts,
+    getPostS,
+    updateUpvotePostS,updateDownvotePostS
 }

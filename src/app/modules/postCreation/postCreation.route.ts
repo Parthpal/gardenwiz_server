@@ -11,4 +11,8 @@ router.post('/create-post',
     },
     postController.postCreationC )
 
+router.get('/posts',postController.getPostC)
+router.patch('/posts/upvote/:id',postController.updatePostc)
+router.patch('/posts/downvote/:id',postController.updateDownPostc)
+
 export const postRoutes=router;
