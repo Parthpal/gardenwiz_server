@@ -26,7 +26,6 @@ await Promise.all(
     })
 )
 payload.images = itemImages;
-payload.userID= '65598vd6698sacQ' // Replace with actual ObjectId
 payload.premium= false;
 payload.upvotes= 0;
 payload.downvotes= 0;
@@ -59,9 +58,17 @@ const updateDownvotePostS=async(id:string)=>{
         ;
     return result;
 }
-
+const addCommentS=async(id:string,payload:any)=>{
+    const result=Post.findByIdAndUpdate(
+        {_id:id},
+        {comments:{ $addToSet: { userID: payload.userID,comment:payload.comment } }},
+        { new: true })
+        ;
+    return result;
+}
 export const postServices={
     createPosts,
     getPostS,
-    updateUpvotePostS,updateDownvotePostS
+    updateUpvotePostS,updateDownvotePostS,
+    addCommentS
 }

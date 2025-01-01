@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { USER_ROLE, USER_STATUS } from "./user.constant";
 import { IUserModel, TUser } from "./user.interface";
 import config from "../../config";
@@ -41,7 +41,14 @@ const userSchema=new Schema<TUser,IUserModel>(
             type: String,
             default: null
           },
-
+          followingIds: {
+            type: [{ type: mongoose.Types.ObjectId, ref: 'User', required: true }],
+            default: []
+          },
+          followerIds: {
+            type: [{ type: mongoose.Types.ObjectId, ref: 'User', required: true }],
+            default: []
+          },  
     }
 )
 

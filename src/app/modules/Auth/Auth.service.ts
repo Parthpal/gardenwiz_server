@@ -31,6 +31,8 @@ const registerUser = async (payload: TUserRegister) => {
     profilePhoto: newUser.profilePhoto,
     role: newUser.role,
     status: newUser.status,
+    followerIds:newUser.followerIds,
+    followingIds:newUser.followingIds
   };
 
   const accessToken = createToken(
@@ -80,6 +82,8 @@ const jwtPayload = {
   profilePhoto: user.profilePhoto,
   role: user.role,
   status: user.status,
+  followerIds:user.followerIds,
+  followingIds:user.followingIds
 };
 
 const accessToken = createToken(

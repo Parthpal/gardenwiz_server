@@ -6,7 +6,7 @@ const postCreationC=async(req:Request,res:Response)=>{
     try{
         const post=await postServices.createPosts(req.body,req.files);
         // send response with created user
-        console.log(post);
+       // console.log(post);
         
         res.status(200).json({
             success:true,
@@ -78,9 +78,30 @@ const updateDownPostc=async(req:Request,res:Response)=>{
     }
 }
 
+const addCommentsC=async(req:Request,res:Response)=>{
+    const id=req.params.id; 
+    const reqBody=req.body;
+   // console.log(id);
+    try {
+        const posts= await postServices.addCommentS(id,reqBody);
+        res.status(200).json({
+            success:true,
+            message:'Comment Added succcessfully',
+            data:posts
+        })
+    } catch (error:unknown) {
+        res.status(500).json({
+            success:false,
+            message:'Comments Not Added',
+            error:'An unknown error occurred'
+        })
+    }
+}
+
 export const postController={
     postCreationC,
     getPostC,
     updatePostc,
-    updateDownPostc
+    updateDownPostc,
+    addCommentsC
 }

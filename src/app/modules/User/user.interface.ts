@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, ObjectId } from "mongoose";
 import { USER_ROLE, USER_STATUS } from "./user.constant";
 
 export type TUser = {
@@ -10,6 +10,8 @@ export type TUser = {
     status: keyof typeof USER_STATUS;
     passwordChangedAt?: Date;
     profilePhoto?: string;
+    followerIds?:ObjectId[];
+    followingIds?:ObjectId[];
     createdAt?: Date;
     updatedAt?: Date;
   };
