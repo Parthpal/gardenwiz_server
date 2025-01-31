@@ -63,8 +63,8 @@ const loginUser = async (payload: TUserLogin) => {
           message:'User does not exist'
       };
   }
-    console.log(user);
-    console.log(payload);
+    // console.log(user);
+    // console.log(payload);
 
     //checking if the password is correct
     if (!(await User.isPasswordMatched(payload?.password, user?.password))){

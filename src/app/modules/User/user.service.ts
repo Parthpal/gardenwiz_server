@@ -31,7 +31,16 @@ const updateUserS=async(payload:TUser,id:string,imageData:any)=>{
           return updatedUserDetails;
       }
 const getUserS=()=>{
-    const result=User.find();
+    const result=User.find().populate([
+      {
+        path: 'followingIds',
+        select: '_id name profilePhoto', // Fetch specific fields
+      },
+      {
+        path: 'followerIds',
+        select: '_id name profilePhoto', // Fetch specific fields
+      },
+    ]);
     return result;
 }
 
@@ -65,10 +74,20 @@ const deleteFollowerS=async(payload:any)=>{
               );
             //   const userDetails=await User.findById(payload.CurrentUserId);
 }
+const updateUserStatusS=async(id:string,payload:string)=>{
+  const result=User.findByIdAndUpdate(
+      {_id:id},
+      {status:'PREMIUM'},
+      { new: true })
+      ;
+  return result;
+}
 export const UserServices = {
     createUser,
     updateUserS,
     getUserS,
     addFollowerS,
-    deleteFollowerS
+    deleteFollowerS,
+    updateUserStatusS
+
   };

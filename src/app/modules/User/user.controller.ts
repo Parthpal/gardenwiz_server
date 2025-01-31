@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UserServices } from "./user.service";
+import { User } from "./user.model";
 
 const userRegister=async(req:Request,res:Response): Promise<void> =>{
  try{
@@ -117,11 +118,31 @@ const deleteFollowerC=async(req:Request,res:Response)=>{
         })
     }
 }
+const updateUserStatusc=async(req:Request,res:Response)=>{
+    const id=req.params.id; 
+   // const {status}=req.body;
+    console.log(id);
+    try {
+        const posts= await UserServices.updateUserStatusS(id,req.body);
+        res.status(200).json({
+            success:true,
+            message:'user status updated successfully',
+            data:posts
+        })
+    } catch (error:unknown) {
+        res.status(500).json({
+            success:false,
+            message:'user status updated failed',
+            error:'An unknown error occurred'
+        })
+    }
+}
 export const UserControllers = {
     userRegister,
     userLogin,
     updateUserC,
     getUserC,
     addFollowerC,
-    deleteFollowerC
+    deleteFollowerC,
+    updateUserStatusc
   };

@@ -66,7 +66,16 @@ userSchema.pre('save', async function (next) {
   });
 
   userSchema.statics.isUserExistsByEmail = async function (email: string) {
-    return await User.findOne({ email }).select('+password');
+    return await User.findOne({ email }).select('+password').populate([
+      {
+        path: 'followingIds',
+        select: '_id name profilePhoto', // Fetch specific fields
+      },
+      {
+        path: 'followerIds',
+        select: '_id name profilePhoto', // Fetch specific fields
+      },
+    ]);
   };
 
   userSchema.statics.isPasswordMatched = async function (

@@ -15,4 +15,5 @@ router.put('/user/:id',
 router.get('/user',UserControllers.getUserC)
 router.put('/user/:id/follow',UserControllers.addFollowerC)
 router.put('/user/:id/unfollow',UserControllers.deleteFollowerC)
+router.patch('/user/status/:id',UserControllers.updateUserStatusc)
 export const UserRoutes = router;

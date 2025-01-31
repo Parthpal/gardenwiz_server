@@ -9,6 +9,7 @@ import { UserRoutes } from './app/modules/User/user.route';
 import { authRoutes } from './app/modules/Auth/Auth.route';
 import { categoryRoutes } from './app/modules/categories/category.route';
 import { postRoutes } from './app/modules/postCreation/postCreation.route';
+import { paymentRoutes } from './app/modules/payment/payment.route';
 
 const app: Application = express();
 
@@ -28,6 +29,7 @@ app.use('/api/v1', UserRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/', categoryRoutes);
 app.use('/api/v1/', postRoutes);
+app.use('/api/v1/', paymentRoutes);
 
 //Testing
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
