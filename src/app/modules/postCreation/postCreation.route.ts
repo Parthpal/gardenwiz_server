@@ -13,7 +13,14 @@ router.post('/create-post',
 router.put('/update-post/:id',
     upload.fields([{name:'itemImages'}]),
     (req:Request,res:Response,next:NextFunction)=>{
-        req.body=JSON.parse(req.body.data);
+        if (req.body.data){
+            try {
+                req.body = JSON.parse(req.body.data);
+            } catch (error) {
+                console.error("JSON parsing error:", error);
+                return next(new Error("Invalid JSON format in request body"));
+            }
+        }
         next();
     },
     postController.updatePostCreationC )

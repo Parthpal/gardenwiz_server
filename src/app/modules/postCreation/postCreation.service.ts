@@ -37,42 +37,50 @@ const result=await Post.create(payload);
 //console.log(result);
 return result
 }
-const updatePostCreationS=async(payload:IPost,imageData:any,paramId:string)=>{
-    // let itemImages:string[]=[];
-    // await Promise.all(
-    //     imageData?.itemImages.map(async(data:any)=>{
-    //         //it creates a random name of image
-    //         const imageName=`${Array.from({ length: 10 }, () => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 62)]).join('')}`;
-    //         const path=data?.path;
-    //         const result = await sendImageToCloudanary(imageName, path);
-    //         if (result) {
-    //             const { secure_url } = result; // Extract secure_url from the response
-    //            // console.log(secure_url, 'ssecureurl');
-    //             itemImages?.push(secure_url); // Add the secure_url to the images array
-    //            // console.log(payload);
-               
-    //         } else {
-    //             console.log("Image upload failed, no result returned.");
-    //         }
-           
-    //     })
-    // )
-   console.log(payload,paramId);
-    
-    const result=await Post.findByIdAndUpdate(
-        {_id:paramId},
-        { $set: 
-            { 
-                content: payload.contents,
-                title:payload.title,
-                categoryID:payload.categoryID,
-                tags:payload.tags,
-         } },
+const updatePostCreationS = async (payload: IPost, imageData: any, paramId: string) => {
+    let itemImages: string[] = [];
+
+    // Process new images if they exist
+    if (imageData?.itemImages?.length) {
+        await Promise.all(
+            imageData.itemImages.map(async (data: any) => {
+                const imageName = `${Array.from({ length: 10 }, () =>
+                    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 62)]
+                ).join('')}`;
+                const path = data?.path;
+                const result = await sendImageToCloudanary(imageName, path);
+
+                if (result) {
+                    const { secure_url } = result;
+                    itemImages.push(secure_url);
+                } else {
+                    console.log("Image upload failed, no result returned.");
+                }
+            })
+        );
+    }
+
+    // Ensure data updates even if no new images are uploaded
+    const updateData: any = {
+        content: payload.content,
+        title: payload.title,
+        categoryID: payload.categoryID,
+        tags: payload.tags,
+    };
+
+    //  Only update images if new ones are uploaded
+    if (itemImages.length > 0 || payload.images.length > 0) {
+        updateData.images = [...payload.images, ...itemImages];
+    }
+
+    const result = await Post.findByIdAndUpdate(
+        { _id: paramId },
+        { $set: updateData },
         { new: true }
     );
-   // console.log(result);
-    return result
-    }
+
+    return result;
+};
 
 const getPostS=()=>{
     const result=Post.find();

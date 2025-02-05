@@ -59,6 +59,16 @@ const addFollowerS=async(payload:any)=>{
               );
             //   const userDetails=await User.findById(payload.CurrentUserId);
 }
+const addFavouritePostS=async(userId:any,postID:any)=>{
+            //console.log(payload.FollowerId,payload.CurrentUserId);      
+           // const userDetails=await User.findById(payload.CurrentUserId);
+            await User.findByIdAndUpdate(
+              userId, 
+                { $addToSet: { favoritePosts: postID } }, 
+                { new: true }
+              );
+            //   const userDetails=await User.findById(payload.CurrentUserId);
+}
 const deleteFollowerS=async(payload:any)=>{
            // console.log(payload.FollowerId,payload.CurrentUserId);      
            // const userDetails=await User.findById(payload.CurrentUserId);
@@ -88,6 +98,7 @@ export const UserServices = {
     getUserS,
     addFollowerS,
     deleteFollowerS,
-    updateUserStatusS
+    updateUserStatusS,
+    addFavouritePostS
 
   };

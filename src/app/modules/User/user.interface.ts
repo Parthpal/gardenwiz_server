@@ -12,6 +12,7 @@ export type TUser = {
     profilePhoto?: string;
     followerIds?:ObjectId[];
     followingIds?:ObjectId[];
+    favoritePosts?:ObjectId[];
     createdAt?: Date;
     updatedAt?: Date;
   };

@@ -23,6 +23,8 @@ const postCreationC=async(req:Request,res:Response)=>{
      }
 }
 const updatePostCreationC=async(req:Request,res:Response)=>{
+    //console.log(req.body,req.files);
+    
     try{
         const paramId=req.params.id;     
         const post=await postServices.updatePostCreationS(req.body,req.files,paramId);

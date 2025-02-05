@@ -49,6 +49,10 @@ const userSchema=new Schema<TUser,IUserModel>(
             type: [{ type: mongoose.Types.ObjectId, ref: 'User', required: true }],
             default: []
           },  
+          favoritePosts: {
+            type: [{ type: mongoose.Types.ObjectId, ref: 'Post', required: true }],
+            default: []
+          },  
     }
 )
 

@@ -96,6 +96,25 @@ const addFollowerC=async(req:Request,res:Response)=>{
         })
     }
 }
+const addFavouritePostC=async(req:Request,res:Response)=>{
+    const userId=req.params.id;
+    const {postID}=req.body;
+    console.log(userId,postID);  
+    try {
+        const followers= await UserServices.addFavouritePostS(userId,postID);
+        res.status(200).json({
+            success:true,
+            message:'Follower added successfully',
+            data:followers
+        })
+    } catch (error:unknown) {
+        res.status(500).json({
+            success:false,
+            message:'Follower not added',
+            error:'An unknown error occurred'
+        })
+    }
+}
 const deleteFollowerC=async(req:Request,res:Response)=>{
     const followerId=req.params.id;
     const {currentUser}=req.body;
@@ -144,5 +163,6 @@ export const UserControllers = {
     getUserC,
     addFollowerC,
     deleteFollowerC,
-    updateUserStatusc
+    updateUserStatusc,
+    addFavouritePostC
   };
