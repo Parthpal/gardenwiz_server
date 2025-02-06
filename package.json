@@ -26,6 +26,7 @@
     "handlebars": "^4.7.8",
     "http-status": "^1.7.4",
     "jsonwebtoken": "^9.0.2",
+    "meilisearch": "^0.48.2",
     "mongoose": "^8.8.1",
     "multer": "^1.4.5-lts.1",
     "multer-storage-cloudinary": "^4.0.0",

@@ -10,6 +10,7 @@ import { authRoutes } from './app/modules/Auth/Auth.route';
 import { categoryRoutes } from './app/modules/categories/category.route';
 import { postRoutes } from './app/modules/postCreation/postCreation.route';
 import { paymentRoutes } from './app/modules/payment/payment.route';
+import { MeilisearchRoutes } from './app/modules/Meilisearch/meilisearch.routes';
 
 const app: Application = express();
 
@@ -30,6 +31,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/', categoryRoutes);
 app.use('/api/v1/', postRoutes);
 app.use('/api/v1/', paymentRoutes);
+app.use('/api/v1/', MeilisearchRoutes);
 
 //Testing
 app.get('/', (req: Request, res: Response, next: NextFunction) => {

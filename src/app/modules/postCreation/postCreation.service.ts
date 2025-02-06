@@ -4,6 +4,7 @@ import { IPost } from "./postCreation.interface";
 import Post from "./postCreation.model";
 import mongoose, { ObjectId } from "mongoose";
 import { date } from "zod";
+import { addDocumentToIndex, deleteDocumentFromIndex, meiliClient } from "../../utils/meilisearch";
 
 const createPosts=async(payload:IPost,imageData:any)=>{
 let itemImages:string[]=[];
@@ -34,7 +35,11 @@ payload.updatedAt=new Date();
 //console.log(payload);
 
 const result=await Post.create(payload);
+//const {_id,title,content,tags}=result
 //console.log(result);
+await addDocumentToIndex(result,'itemPost');
+//console.log(result);
+//await meiliClient.index('itemPost').addDocuments([{_id:_id.toString(),title,content,tags}]);
 return result
 }
 const updatePostCreationS = async (payload: IPost, imageData: any, paramId: string) => {
@@ -162,10 +167,14 @@ const deleteCommentS=async(id:string,postId:string)=>{
 }
 const deletePostS=async(id:string)=>{
     //console.log(id,postId); 
-    const result=Post.findByIdAndDelete(
+    const result=await Post.findByIdAndDelete(
         {_id:id},
         { new: true })
         ;
+    const deleteItemId=result?._id;
+    if (deleteItemId){
+        await deleteDocumentFromIndex('itemPost',deleteItemId.toString())
+    }
     return result;
 }
 export const postServices={
