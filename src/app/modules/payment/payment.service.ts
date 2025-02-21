@@ -27,8 +27,12 @@ const createPaymentIntentS=async(payload:any)=>{
   }
 }
 
-
+const getPaymentS=()=>{
+  const result=PaymentDetailsModel.find();
+  return result;
+}
 export const paymentServices = {
 createPaymentS,
-createPaymentIntentS
+createPaymentIntentS,
+getPaymentS
   };

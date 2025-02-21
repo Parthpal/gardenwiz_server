@@ -41,6 +41,7 @@ const userSchema=new Schema<TUser,IUserModel>(
             type: String,
             default: null
           },
+          ban: { type: Boolean, default: false },
           followingIds: {
             type: [{ type: mongoose.Types.ObjectId, ref: 'User', required: true }],
             default: []
@@ -70,6 +71,7 @@ userSchema.pre('save', async function (next) {
   });
 
   userSchema.statics.isUserExistsByEmail = async function (email: string) {
+    //console.log(email,'email validate');
     return await User.findOne({ email }).select('+password').populate([
       {
         path: 'followingIds',
@@ -81,12 +83,26 @@ userSchema.pre('save', async function (next) {
       },
     ]);
   };
-
+// Static method to check if user is banned
+userSchema.statics.isUserBanned = async function (email: string) {
+  const user = await this.findOne({ email });
+  return user ? user.ban : false;
+};
   userSchema.statics.isPasswordMatched = async function (
     plainTextPassword,
     hashedPassword
   ) {
     return await bcryptjs.compare(plainTextPassword, hashedPassword);
+  };
+ // This function helps to prevent the use of old JWTs (JSON Web Tokens) if the user has changed their password.
+  userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
+    passwordChangedTimestamp: number,
+    jwtIssuedTimestamp: number
+  
+  ) {
+    const passwordChangedTime =
+    new Date(passwordChangedTimestamp).getTime() / 1000;
+    return passwordChangedTime > jwtIssuedTimestamp;
   };
   
 

@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import config from '../config';
 import multer from 'multer';
+import fs from 'fs';
 export const sendImageToCloudanary=async (imageName:string,path:string)=>{
       try {
         // Configuration
@@ -16,6 +17,13 @@ export const sendImageToCloudanary=async (imageName:string,path:string)=>{
         });
 
        // console.log("Upload Result:", uploadResult); // Optional: Log for debugging
+       fs.unlink(path,(err)=>{
+        if(err){
+          console.error(err)
+        }else{
+          console.error('File is deleted')
+        }
+       })
         return uploadResult; // Return the result
       } catch (error) {
         console.error("Error uploading to Cloudinary:", error);

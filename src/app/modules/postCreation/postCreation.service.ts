@@ -88,7 +88,10 @@ const updatePostCreationS = async (payload: IPost, imageData: any, paramId: stri
 };
 
 const getPostS=()=>{
-    const result=Post.find();
+    const result=Post.find().sort({createdAt:-1}).populate({
+        path:'userID',
+        select:'name email profilePhoto'
+    });
     return result;
 }
 const getPostIDS=(id:string)=>{

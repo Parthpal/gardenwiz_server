@@ -5,5 +5,6 @@ const router=express.Router();
 
 router.post('/payments',paymentController.paymentCreationC );
 router.post('/create-payment-intent',paymentController.paymentIntentCreationC);
+router.get('/payments',paymentController.getPaymentC)
 
 export const paymentRoutes = router;

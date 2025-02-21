@@ -52,12 +52,25 @@ const updateUserC=async(req:Request,res:Response): Promise<Response | void> =>{
           message: "User updated successfully",
           user: updatedUser,
         });
-      } catch (error) {
+      } catch (error:any) {
+        res.status(500).json({ message: "Error updating user", error: error.message });
+       }
+}
+const modifyUserC=async(req:Request,res:Response)=>{
+    //console.log(req.body,req.params.id,req.files);
+    try {
+      //  Find and update the user
+        const updatedUser= await UserServices.modifyUserS(req.body,req.params.id)
+        res.status(200).json({
+          message: "User updated successfully",
+        });
+      } catch (error:any) {
         res.status(500).json({ message: "Error updating user", error: error.message });
        }
 }
 
 const getUserC=async(req:Request,res:Response)=>{
+   // console.log(req.user); 
     try {
         const categories= await UserServices.getUserS();
         res.status(200).json({
@@ -69,6 +82,25 @@ const getUserC=async(req:Request,res:Response)=>{
         res.status(500).json({
             success:false,
             message:'Users not found',
+            error:'An unknown error occurred'
+        })
+    }
+}
+
+const getUserIDC=async(req:Request,res:Response)=>{
+    const userId=req.params.id;
+    //console.log(userId);
+    try {
+        const posts= await UserServices.getUserIDS(userId);
+        res.status(200).json({
+            success:true,
+            message:'user found successfully',
+            data:posts
+        })
+    } catch (error:unknown) {
+        res.status(500).json({
+            success:false,
+            message:'user not found',
             error:'An unknown error occurred'
         })
     }
@@ -116,18 +148,17 @@ const addFavouritePostC=async(req:Request,res:Response)=>{
     }
 }
 const deleteFollowerC=async(req:Request,res:Response)=>{
-    const followerId=req.params.id;
+    const followingId=req.params.id;
     const {currentUser}=req.body;
     const userdata={
-        FollowerId:followerId,
+        FollowingId:followingId,
         CurrentUserId:currentUser
     }
     try {
-        const categories= await UserServices.deleteFollowerS(userdata);
+        const result= await UserServices.deleteFollowerS(userdata);
         res.status(200).json({
             success:true,
             message:'Follower Deleted successfully',
-            data:categories
         })
     } catch (error:unknown) {
         res.status(500).json({
@@ -164,5 +195,7 @@ export const UserControllers = {
     addFollowerC,
     deleteFollowerC,
     updateUserStatusc,
-    addFavouritePostC
+    addFavouritePostC,
+    getUserIDC,
+    modifyUserC
   };

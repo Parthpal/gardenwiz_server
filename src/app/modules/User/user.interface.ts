@@ -1,7 +1,7 @@
 import { Model, ObjectId } from "mongoose";
 import { USER_ROLE, USER_STATUS } from "./user.constant";
 
-export type TUser = {
+export interface TUser {
     _id?: string;
     name: string;
     role: keyof typeof USER_ROLE;
@@ -13,6 +13,7 @@ export type TUser = {
     followerIds?:ObjectId[];
     followingIds?:ObjectId[];
     favoritePosts?:ObjectId[];
+    ban:boolean;
     createdAt?: Date;
     updatedAt?: Date;
   };
@@ -22,4 +23,11 @@ export type TUser = {
       plainTextPassword: string,
       hashedPassword: string
     ): Promise<boolean>;
+    isUserBanned(email:string):Promise<boolean>;
+    isJWTIssuedBeforePasswordChanged(
+      passwordChangedTimestamp: Date,
+      jwtIssuedTimestamp: number
+    ): boolean;
   }
+
+  export type TUserRole=keyof typeof USER_ROLE;

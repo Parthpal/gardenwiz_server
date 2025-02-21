@@ -43,7 +43,25 @@ const paymentCreationC=async(req:Request,res:Response)=>{
      }
 }
 
+const getPaymentC=async(req:Request,res:Response)=>{
+    try {
+        const posts= await paymentServices.getPaymentS();
+        res.status(200).json({
+            success:true,
+            message:'payment data found successfully',
+            data:posts
+        })
+    } catch (error:unknown) {
+        res.status(500).json({
+            success:false,
+            message:'payment data not found',
+            error:'An unknown error occurred'
+        })
+    }
+}
+
 export const paymentController={
     paymentCreationC,
-    paymentIntentCreationC
+    paymentIntentCreationC,
+    getPaymentC
 }

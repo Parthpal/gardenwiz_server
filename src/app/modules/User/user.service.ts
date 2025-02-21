@@ -7,7 +7,8 @@ const createUser=async(payload:TUser)=>{
     return user
 }
 const updateUserS=async(payload:TUser,id:string,imageData:any)=>{
-        let profilePhoto:string='';
+        console.log(payload.profilePhoto,'payload profile');
+        let profilePhoto:string=payload.profilePhoto || '';
         // console.log(payload,id,imageData);
         const imageName=`${Array.from({ length: 10 }, () => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 62)]).join('')}`;
         const path=imageData?.path;
@@ -21,6 +22,7 @@ const updateUserS=async(payload:TUser,id:string,imageData:any)=>{
                 } else {
                     console.log("Image upload failed, no result returned.");
                 }
+    
         // Find and update the user
            const { name, email } =payload;
             const updatedUserDetails = await User.findByIdAndUpdate(
@@ -30,8 +32,18 @@ const updateUserS=async(payload:TUser,id:string,imageData:any)=>{
               );
           return updatedUserDetails;
       }
+const modifyUserS=async(payload:TUser,id:string)=>{
+        // Find and update the user
+           //console.log(payload,id);     
+            const updatedUserDetails = await User.findByIdAndUpdate(
+              id,
+              payload,
+              { new: true, runValidators: true } // Return updated document, validate inputs
+              );
+          return null;
+      }
 const getUserS=()=>{
-    const result=User.find().populate([
+    const result=User.find({ role: { $ne: "ADMIN" }}).populate([
       {
         path: 'followingIds',
         select: '_id name profilePhoto', // Fetch specific fields
@@ -42,6 +54,20 @@ const getUserS=()=>{
       },
     ]);
     return result;
+}
+
+const getUserIDS=(id:string)=>{
+  const result=User.findById(id).populate([
+    {
+      path: 'followingIds',
+      select: '_id name profilePhoto', // Fetch specific fields
+    },
+    {
+      path: 'followerIds',
+      select: '_id name profilePhoto', // Fetch specific fields
+    },
+  ]);
+  return result;
 }
 
 const addFollowerS=async(payload:any)=>{
@@ -74,14 +100,15 @@ const deleteFollowerS=async(payload:any)=>{
            // const userDetails=await User.findById(payload.CurrentUserId);
             await User.findByIdAndUpdate(
                 payload.CurrentUserId, 
-                { $pull: { followingIds: payload.FollowerId } }, 
+                { $pull: { followingIds: payload.FollowingId } }, 
                 { new: true }
               );
             await User.findByIdAndUpdate(
-                payload.FollowerId, 
+                payload.FollowingId, 
                 { $pull: { followerIds: payload.CurrentUserId } }, 
                 { new: true }
               );
+            return null
             //   const userDetails=await User.findById(payload.CurrentUserId);
 }
 const updateUserStatusS=async(id:string,payload:string)=>{
@@ -99,6 +126,7 @@ export const UserServices = {
     addFollowerS,
     deleteFollowerS,
     updateUserStatusS,
-    addFavouritePostS
-
+    addFavouritePostS,
+    getUserIDS,
+    modifyUserS
   };

@@ -12,7 +12,45 @@ const registerValidationSchema = z.object({
     profilePhoto: z.string(),
   }),
 });
+const loginValidationSchema = z.object({
+  body: z.object({
+    email: z.string({
+      required_error: 'Email is required',
+    }),
+    password: z.string({ required_error: 'Password is required' }),
+  }),
+});
+const passwordValidationSchema = z.object({
+  body: z.object({
+    oldPassword: z.string({ required_error: 'Old Password is required' }),
+    newPassword: z.string({ required_error: 'New Password is required' }),
+  }),
+});
+const forgetPasswordValidationSchema= z.object({
+  body: z.object({
+    email: z.string({  required_error: 'Email Id is required'})
+  }),
+});
+const resetPasswordValidationSchema= z.object({
+  body: z.object({
+    email: z.string({  required_error: 'Email Id is required'}),
+    newPassword: z.string({ required_error: 'New Password is required' }),
+  }),
+});
+
+const refreshTokenValidationSchema = z.object({
+  cookies: z.object({
+    refreshToken: z.string({
+      required_error: 'Refresh token is required!',
+    }),
+  }),
+});
 
 export const AuthValidation = {
     registerValidationSchema,
+    loginValidationSchema,
+    passwordValidationSchema,
+    refreshTokenValidationSchema,
+    forgetPasswordValidationSchema,
+    resetPasswordValidationSchema
 }
