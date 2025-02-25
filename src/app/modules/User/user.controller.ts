@@ -12,7 +12,7 @@ const userRegister=async(req:Request,res:Response): Promise<void> =>{
         data:user
     })
  }
- catch(error){
+ catch(error:any){
     res.status(500).json({
         success:false,
         message:'User creation failed',
@@ -31,7 +31,7 @@ const userLogin=async(req:Request,res:Response): Promise<void> =>{
            data:user
        })
     }
-    catch(error){
+    catch(error:any){
        res.status(500).json({
            success:false,
            message:'User failed',
@@ -39,15 +39,12 @@ const userLogin=async(req:Request,res:Response): Promise<void> =>{
        })
     }
    }
-const updateUserC=async(req:Request,res:Response): Promise<Response | void> =>{
+const updateUserC=async(req:Request,res:Response): Promise<void> =>{
 
     //console.log(req.body,req.params.id,req.files);
     try {
       //  Find and update the user
         const updatedUser= await UserServices.updateUserS(req.body,req.params.id,req.file)
-        if (!updatedUser) {
-          return res.status(404).json({ message: "User not found" });
-        }
         res.status(200).json({
           message: "User updated successfully",
           user: updatedUser,

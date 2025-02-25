@@ -14,7 +14,7 @@ const postCreationC=async(req:Request,res:Response)=>{
             data:post
         })
      }
-     catch(error){
+     catch(error:any){
         res.status(500).json({
             success:false,
             message:'Data Posted failed',
@@ -37,7 +37,7 @@ const updatePostCreationC=async(req:Request,res:Response)=>{
             data:post
         })
      }
-     catch(error){
+     catch(error:any){
         res.status(500).json({
             success:false,
             message:'Data Updation failed',
@@ -62,6 +62,31 @@ const getPostC=async(req:Request,res:Response)=>{
         })
     }
 }
+
+const postSearchItemC = async (req: Request, res: Response) => {
+    const {searchTerm} = req.query;
+    try {
+        if (!searchTerm) {
+            return res.status(400).json({
+                success: false,
+                message: "Search term is required",
+            });
+        }
+        const results = await postServices.postSearchItemS(searchTerm);
+        res.status(200).json({
+            success: true,
+            message: "Search results retrieved successfully",
+            data: results,
+        });
+    } catch (error: unknown) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to search items",
+            error: "An unknown error occurred",
+        });
+    }
+};
+
 const getPostIDC=async(req:Request,res:Response)=>{
     const postId=req.params.id;
     try {
@@ -219,5 +244,6 @@ export const postController={
     updateCommentsC,
     getCommentC,
     deletePostC,
-    updatePostCreationC
+    updatePostCreationC,
+    postSearchItemC
 }

@@ -4,9 +4,9 @@ import { IPost } from "./postCreation.interface";
 import Post from "./postCreation.model";
 import mongoose, { ObjectId } from "mongoose";
 import { date } from "zod";
-import { addDocumentToIndex, deleteDocumentFromIndex, meiliClient } from "../../utils/meilisearch";
+import { addDocumentToIndex, deleteDocumentFromIndex } from "../../utils/meilisearch";
 
-const createPosts=async(payload:IPost,imageData:any)=>{
+const createPosts=async(payload:any,imageData:any)=>{
 let itemImages:string[]=[];
 await Promise.all(
     imageData?.itemImages.map(async(data:any)=>{
@@ -86,7 +86,16 @@ const updatePostCreationS = async (payload: IPost, imageData: any, paramId: stri
 
     return result;
 };
-
+export const postSearchItemS = async (searchTerm: any) => {
+    const searchRegex = new RegExp(searchTerm, "i"); // Case-insensitive search
+    return await Post.find({
+      $or: [
+        { title: searchRegex },
+        { content: searchRegex },
+        { tags: searchRegex },
+      ],
+    });
+  };
 const getPostS=()=>{
     const result=Post.find().sort({createdAt:-1}).populate({
         path:'userID',
@@ -190,5 +199,6 @@ export const postServices={
     updateCommentS,
     getCommentS,
     deletePostS,
-    updatePostCreationS
+    updatePostCreationS,
+    postSearchItemS
 }

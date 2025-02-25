@@ -13,7 +13,7 @@ const paymentIntentCreationC=async(req:Request,res:Response)=>{
             clientSecret:paymentIntent.client_secret
         })
      }
-     catch(error){
+     catch(error:any){
         res.status(500).json({
             success:false,
            // message:'payment Data Posted failed',
@@ -34,7 +34,7 @@ const paymentCreationC=async(req:Request,res:Response)=>{
             data:post
         })
      }
-     catch(error){
+     catch(error:any){
         res.status(500).json({
             success:false,
             message:'payment Data Posted failed',

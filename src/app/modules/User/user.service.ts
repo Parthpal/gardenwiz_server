@@ -30,7 +30,7 @@ const updateUserS=async(payload:TUser,id:string,imageData:any)=>{
               { name, email, profilePhoto },
                 { new: true, runValidators: true } // Return updated document, validate inputs
               );
-          return updatedUserDetails;
+          return null;
       }
 const modifyUserS=async(payload:TUser,id:string)=>{
         // Find and update the user

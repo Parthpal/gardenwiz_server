@@ -4,7 +4,7 @@ import { MeilisearchServices } from "./meilisearch.services";
 const getMeiliSearchPostC=async(req:Request,res:Response)=>{
     const { searchTerm, limit } = req.query;
     // console.log(searchTerm);
-   console.log(req.data);
+   //console.log(req.data);
     const numberLimit = Number(limit) || 10;
     try {
         const result = await MeilisearchServices.getAllPosts(

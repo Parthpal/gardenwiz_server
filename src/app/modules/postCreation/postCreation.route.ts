@@ -33,5 +33,6 @@ router.delete('/posts/comments/:id',postController.deleteCommentsC)
 router.patch('/posts/comments/:id',postController.updateCommentsC)
 router.get('/ALLComments',postController.getCommentC)
 router.delete('/posts/:id',postController.deletePostC)
+router.get('/searchPosts', postController.postSearchItemC);
 
 export const postRoutes=router;

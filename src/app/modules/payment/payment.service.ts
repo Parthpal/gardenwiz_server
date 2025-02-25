@@ -21,7 +21,7 @@ const createPaymentIntentS=async(payload:any)=>{
     });
     console.log(paymentIntent);
     return paymentIntent;
-  } catch (error) {
+  } catch (error:any) {
     console.error("Error creating payment intent:", error.message);
     throw error; // Re-throw the error to handle it in the caller function
   }
